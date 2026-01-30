@@ -52,24 +52,29 @@ def load_instance(input_path: str):
 
 
 def main() -> int:
-
     parser = build_parser()
-
     ns = parser.parse_args()
 
     instance = load_instance(ns.input_file)
-
     if instance is None:
         return 1
 
     if ns.validate_only:
         return 0
 
-    # TODO: matcher and verifier and write results to stdout, stderr = logs
+    if ns.mode == "match":
+        matches, proposals = gale_shapley(instance)
 
-    print(f"ok (parsed n={instance.n})", file=sys.stderr)
+        for i, s_id in enumerate(matches, start=1):
+            print(i, s_id)
 
+        print(f"proposals: {proposals}", file=sys.stderr)
+        return 0
+
+    # ns.mode == "verify"
+    print("verifier not implemented yet", file=sys.stderr)
     return 0
+
 
 
 if __name__ == "__main__":
