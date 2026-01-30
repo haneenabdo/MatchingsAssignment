@@ -2,6 +2,8 @@ import sys
 import argparse
 
 from parser import parse_instance, ParseError
+from matcher import gale_shapley
+
 
 
 def build_parser() -> argparse.ArgumentParser:
