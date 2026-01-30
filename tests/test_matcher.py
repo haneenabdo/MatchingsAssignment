@@ -18,6 +18,17 @@ class TestMatcher(unittest.TestCase):
         self.assertEqual(matches, [])
         self.assertEqual(proposals, 0)
 
+    def test_single_instance(self):
+        inst = ProblemInstance(
+            n=1,
+            hospital_prefs=[[1]],
+            student_prefs=[[1]]
+        )
+
+        matches, proposals = gale_shapley(inst)
+
+        self.assertEqual(matches, [1])
+        self.assertGreaterEqual(proposals, 1)
 
     def test_example_instance_valid_matching(self):
         inst = ProblemInstance(
@@ -48,4 +59,3 @@ class TestMatcher(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
-
