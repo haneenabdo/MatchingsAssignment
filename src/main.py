@@ -3,6 +3,7 @@ import argparse
 
 from parser import parse_instance, ParseError
 from matcher import gale_shapley
+from verifier import verify_instance
 
 
 
@@ -30,6 +31,12 @@ def build_parser() -> argparse.ArgumentParser:
         "--validate-only",
         action="store_true",
         help="only validate that the input parses; don't do any work",
+    )
+
+    p.add_argument(
+        "--matching",
+        default=None,
+        help="path to matching file (required for verify mode)"
     )
 
     return p
@@ -71,9 +78,13 @@ def main() -> int:
         print(f"proposals: {proposals}", file=sys.stderr)
         return 0
 
-    # ns.mode == "verify"
-    print("verifier not implemented yet", file=sys.stderr)
-    return 0
+    if ns.mode == "verify":
+        if ns.matching is None:
+            print("invalid input: --matching is required in verify mode", file=sys.stderr)
+            return 1
+    ok_valid, ok_stable, msg = verify_instance(instance, ns.matching)
+    print(msg)
+    return 0 if (ok_valid and ok_stable) else 2
 
 
 
